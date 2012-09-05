@@ -6,6 +6,8 @@ Status: alpha. Is limited to release patterns used at `Cosent`_.
 bumpversion
 ===========
 
+Enable automated version numbering. Handy for use in conjunction with `jarn.mkrelease`_ which breaks if the number isn't incremented.
+
 To make the bumpversion script available in your buildout bin directory, add the following to buildout.cfg::
 
     [buildout]
@@ -37,10 +39,11 @@ Version algorithm is as follows:
     2.7    -> 2.8
     2.8rc2 -> 2.8
 
-The algorithm is dumb and only understands major/minor and rc.
+The algorithm is dumb and only understands major.minor + rc.
 Different version numbers like 2.7dev4, 2.8b3, 2.8-fix2 will cause breakage. 
 
 YMMV.
 
 
 .. _Cosent: http://cosent.nl
+.. _jarn.mkrelease: http://pypi.python.org/pypi/jarn.mkrelease
