@@ -6,8 +6,7 @@ version = '0.2'
 setup(name='cosent.buildtools',
       version=version,
       description="Release scripts",
-      long_description="""\
-""",
+      long_description=open('README.rst').read(),
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Environment :: Console',
@@ -34,4 +33,3 @@ setup(name='cosent.buildtools',
           'console_scripts': 'bumpversion=cosent.buildtools.bumpversion:main',
       },
       )
- )
