@@ -1,4 +1,5 @@
 from optparse import OptionParser
+import sys
 
 
 def bump_rc(version):
@@ -52,7 +53,8 @@ def bump_setup_py(filepath, final=False):
         fh.seek(0)
         fh.write(''.join(new_setup))
 
-if __name__ == '__main__':
+
+def main():
     parser = OptionParser()
     parser.add_option("-f", "--final",
                       action="store_true", dest="final", default=False,
@@ -62,3 +64,19 @@ if __name__ == '__main__':
     # release: python --final bumpversion.py some.egg/setup.py
     if args:
         bump_setup_py(args[0], options.final)
+    else:
+        print(usage)
+
+usage = """
+To bump the version to the next rc:
+
+    $ bumpversion ./path/some.egg/setup.py
+
+To bump the version to the next final release:
+
+    $ bumpversion --final ./path/some.egg/setup.py
+
+"""
+
+if __name__ == '__main__':
+    sys.exit(main())

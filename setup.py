@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.1'
+version = '0.2'
 
 # http://pypi.python.org/pypi?%3Aaction=list_classifiers
 setup(name='cosent.buildtools',
@@ -28,9 +28,10 @@ setup(name='cosent.buildtools',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          'setuptools',
       ],
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
+      entry_points={
+          'console_scripts': 'bumpversion=cosent.buildtools.bumpversion:main',
+      },
       )
+ )
