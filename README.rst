@@ -2,19 +2,28 @@ Low-level buildout helper scripts to manage complex buildout releases.
 
 Status: alpha. Is limited to release patterns used at `Cosent`_.
 
-See Makefile and buildout for examples of providing the script entry points in a buildout.
-
 
 bumpversion
 ===========
 
-To bump the version to the next rc::
+To make the bumpversion script available in your buildout bin directory, add the following to buildout.cfg::
 
-    $ bumpversion ./path/some.egg/setup.py
+    [buildout]
+    parts += bumpversion
 
-To bump the version to the next final release::
+    [bumpversion]
+    recipe = zc.recipe.egg
+    eggs = cosent.buildtools
+    scripts = bumpversion
 
-    $ bumpversion --final ./path/some.egg/setup.py
+
+To bump a version to the next release candidate::
+
+    $ bin/bumpversion ./src/some.egg/setup.py
+
+To bump a version to the next final release::
+
+    $ bin/bumpversion --final ./src/some.egg/setup.py
 
 Version algorithm is as follows:
 
@@ -28,7 +37,7 @@ Version algorithm is as follows:
     2.7    -> 2.8
     2.8rc2 -> 2.8
 
-The algorithm is dump and only understands major/minor and rc.
+The algorithm is dumb and only understands major/minor and rc.
 Different version numbers like 2.7dev4, 2.8b3, 2.8-fix2 will cause breakage. 
 
 YMMV.
