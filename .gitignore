@@ -2,3 +2,10 @@
 *py?
 *.egg-info
 dist/
+.installed.cfg
+bin/
+develop-eggs/
+eggs/
+include/
+lib/
+lib64

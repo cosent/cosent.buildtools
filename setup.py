@@ -1,14 +1,22 @@
 from setuptools import setup, find_packages
-import sys, os
 
 version = '0.1'
 
+# http://pypi.python.org/pypi?%3Aaction=list_classifiers
 setup(name='cosent.buildtools',
       version=version,
       description="Release scripts",
       long_description="""\
 """,
-      classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+          'Development Status :: 3 - Alpha',
+          'Environment :: Console',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: GPL License',
+          'Operating System :: MacOS :: MacOS X',
+          'Operating System :: POSIX',
+          'Programming Language :: Python :: 2',
+      ],
       keywords='python git buildout',
       author='Guido Stevens',
       author_email='guido.stevens@cosent.net',
