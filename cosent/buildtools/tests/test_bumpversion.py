@@ -1,8 +1,8 @@
 import unittest
 
-from cosent.buildtools.bump_version import bump_rc
-from cosent.buildtools.bump_version import bump_final
-from cosent.buildtools.bump_version import get_version
+from cosent.buildtools.bumpversion import bump_rc
+from cosent.buildtools.bumpversion import bump_final
+from cosent.buildtools.bumpversion import get_version
 
 
 class TestBumpVersion(unittest.TestCase):

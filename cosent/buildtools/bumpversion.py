@@ -26,7 +26,7 @@ def get_version(setup):
             return version.replace('"', '').replace("'", "")
 
 
-def main(filepath, final=False):
+def bump_setup_py(filepath, final=False):
     """Update the version number in <filepath>
     which should be a setup.py file with egg metadata.
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
                       action="store_true", dest="final", default=False,
                       help="Bump a final version")
     (options, args) = parser.parse_args()
-    # rc: python bump_version.py ../setup.py
-    # release: python --final bump_version.py ../setup.py
+    # rc: python bumpversion.py some.egg/setup.py
+    # release: python --final bumpversion.py some.egg/setup.py
     if args:
-        main(args[0], options.final)
+        bump_setup_py(args[0], options.final)
