@@ -3,8 +3,8 @@ default: buildout test
 buildout: bin/buildout
 	@bin/buildout
 
-test: buildout
-	@bin/test -i bump_version
+test:
+	@bin/test
 
 bin/buildout: bin/python2.6
 	@wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
