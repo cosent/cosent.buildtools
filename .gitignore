@@ -3,6 +3,8 @@
 *.egg-info
 dist/
 .installed.cfg
+.mr.developer.cfg
+src/
 .coverage
 bin/
 develop-eggs/
