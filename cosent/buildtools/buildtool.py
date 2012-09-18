@@ -88,8 +88,8 @@ def version_is_current(path):
 
 def git_tag(path, tag, noact=False):
     git = "git tag %s" % tag
+    print("%s: %s" % (path, git))
     if noact:
-        print("%s: %s" % (path, git))
         return
     cmd = subprocess.Popen(git,
                            shell=True,
@@ -101,8 +101,8 @@ def git_tag(path, tag, noact=False):
 
 def git_commit(path, tag, noact=False):
     git = "git commit -a -m 'Preparing release %s'" % tag
+    print("%s: %s" % (path, git))
     if noact:
-        print("%s: %s" % (path, git))
         return
     cmd = subprocess.Popen(git,
                            shell=True,
@@ -114,8 +114,8 @@ def git_commit(path, tag, noact=False):
 
 def git_push(path, noact=False):
     git = "git push --tags"
+    print("%s: %s" % (path, git))
     if noact:
-        print("%s: %s" % (path, git))
         return
     cmd = subprocess.Popen(git,
                            shell=True,
@@ -151,6 +151,7 @@ def mkrelease(path, dist, noact=False):
         args.append("-n")
     args.append("-d %s" % dist)
     args.append(path)
+    print("mkrelease %s" % " ".join(args))
     jarn_mkrelease(args)
 
 
