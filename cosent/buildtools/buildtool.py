@@ -71,6 +71,7 @@ def version_is_tagged(path):
     stdout, stderr = cmd.communicate()
     tags = stdout.strip().split('\n')
     version = bv.get_version("%s/setup.py" % path)
+    import pdb; pdb.set_trace()
     return version in tags
 
 
@@ -162,8 +163,8 @@ def buildtool_status():
         print(git_status(path))
 
 
-def buildtool_cook(final=False, noact=False):
-    if not is_all_clean():
+def buildtool_cook(final=False, noact=False, force=False):
+    if not force and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
         return buildtool_status()
@@ -182,13 +183,14 @@ def buildtool_release(versionsfile,
                       distlocation,
                       buildname=None,
                       final=False,
-                      noact=False):
+                      noact=False,
+                      force=False):
     assert versionsfile
     assert distlocation
     if not buildname:
         buildname = BASEDIR.split('/')[-1]
 
-    if not is_all_clean():
+    if not force and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
         return buildtool_status()
@@ -244,6 +246,9 @@ def main():
     parser.add_option("-b", "--buildout-name",
                       action="store", dest="buildname",
                       help="Name for this buildout.")
+    parser.add_option("-s", "--skip-checks",
+                      action="store_true", dest="force",
+                      help="Skip sanity checks.")
     parser.set_usage(usage)
     (options, args) = parser.parse_args()
     if not args:
@@ -256,7 +261,7 @@ def main():
             buildtool_status()
 
         elif cmd == 'cook':
-            buildtool_cook(options.final, options.noact)
+            buildtool_cook(options.final, options.noact, options.force)
 
         elif cmd == 'release':
             if not options.versionsfile:
@@ -272,7 +277,8 @@ def main():
                               options.distlocation,
                               options.buildname,
                               options.final,
-                              options.noact)
+                              options.noact,
+                              options.force)
         else:
             print "No such command: %s" % cmd
             print(usage)
