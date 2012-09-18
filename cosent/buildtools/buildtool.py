@@ -71,7 +71,6 @@ def version_is_tagged(path):
     stdout, stderr = cmd.communicate()
     tags = stdout.strip().split('\n')
     version = bv.get_version("%s/setup.py" % path)
-    import pdb; pdb.set_trace()
     return version in tags
 
 
@@ -83,7 +82,7 @@ def version_is_current(path):
                            stdout=subprocess.PIPE)
     stdout, stderr = cmd.communicate()
     head = stdout.strip().split('\n')[0]
-    version = bv.get_version("%s/setup.py" % path)
+    version = bv.pkg_version(path)
     return version == head
 
 
