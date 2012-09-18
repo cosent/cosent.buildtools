@@ -113,7 +113,7 @@ def git_commit(path, tag, noact=False):
 
 
 def git_push(path, noact=False):
-    git = "git push --tags"
+    git = "git push; git push --tags"
     print("%s: %s" % (path, git))
     if noact:
         return
