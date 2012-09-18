@@ -27,7 +27,18 @@ def get_version(setup):
             return version.replace('"', '').replace("'", "")
 
 
-def bump_setup_py(filepath, final=False):
+def pkg_version(pkgpath):
+    filepath = '%s/setup.py' % pkgpath
+    with open(filepath, 'r') as fh:
+        setup = fh.readlines()
+    return get_version(setup)
+
+
+def bump_pkg(pkgpath, final=False, noact=False):
+    return bump_setup_py("%s/setup.py" % pkgpath, final, noact)
+
+
+def bump_setup_py(filepath, final=False, noact=False):
     """Update the version number in <filepath>
     which should be a setup.py file with egg metadata.
 
@@ -50,8 +61,11 @@ def bump_setup_py(filepath, final=False):
                 new_setup.append("version = '%s'\n" % new_version)
             else:
                 new_setup.append(line)
-        fh.seek(0)
-        fh.write(''.join(new_setup))
+        if not noact:
+            fh.seek(0)
+            fh.write(''.join(new_setup))
+    print("%s: %s -> %s" % (filepath, version, new_version))
+    return new_version
 
 
 def main():

@@ -28,8 +28,10 @@ setup(name='cosent.buildtools',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'jarn.mkrelease',
       ],
       entry_points={
-          'console_scripts': 'bumpversion=cosent.buildtools.bumpversion:main',
+          'console_scripts': ['bumpversion=cosent.buildtools.bumpversion:main',
+                              'buildtool=cosent.buildtools.buildtool:main']
       },
       )
