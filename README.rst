@@ -82,7 +82,7 @@ Example run::
 
     bin/buildtool status
     bin/buildtool -f cook
-    bin/buildtool -f -v versions.txt -d scp://user@your.server/local release
+    bin/buildtool -f -v versions.txt -d user@your.server:/local release
 
 Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work.
 
