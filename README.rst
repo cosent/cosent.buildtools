@@ -84,9 +84,9 @@ Example run::
 
     bin/buildtool status
     bin/buildtool -f cook
-    bin/buildtool -f -v versions.txt -d scp://your.server/var/pypi release
+    bin/buildtool -f -v versions.txt -d your.server:/var/pypi release
 
-Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work.
+Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work, unless you use the -s (--skip-checks) switch.
 
 
 bumpversion
