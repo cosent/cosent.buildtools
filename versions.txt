@@ -1,1 +1,3 @@
 [versions]
+dummypackage = 0.2
+
