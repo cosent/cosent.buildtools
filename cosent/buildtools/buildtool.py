@@ -219,7 +219,6 @@ def buildtool_release(versionsfile,
 
     if not noact:
         vp.write()
-        git_commit(path, buildout_version, noact)
 
     print("\n====== %s ======" % buildname)
     vp.set_version(buildname, buildout_version)
