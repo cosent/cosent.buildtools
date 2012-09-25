@@ -44,9 +44,9 @@ Installation
 Add the following to your buildout.cfg::
 
     [buildout]
-    parts += buildtool
+    parts += buildtools
 
-    [buildtool]
+    [buildtools]
     recipe = zc.recipe.egg
     eggs = cosent.buildtools
 
@@ -88,10 +88,33 @@ buildtool
 Example run::
 
     bin/buildtool status
-    bin/buildtool -f cook
-    bin/buildtool -f -v versions.txt -d your.server:/var/pypi release
+    bin/buildtool cook
+    bin/buildtool -v versions.txt -d your.server:/var/pypi release
 
 Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work, unless you use the -s (--skip-checks) switch.
+
+Specifying default arguments
+----------------------------
+
+You can specify default settings by initializing a 'defaults' dictionary, and then feed the defaults as an argument to the script. Due to some script generation snafu, you'll have to specify a different script name for this to work.
+
+If you modify your buildout like this::
+
+    [buildtools]
+    recipe = zc.recipe.egg
+    eggs = cosent.buildtools
+    scripts = buildtool=release
+    initialization = defaults = {
+      'versions-file':'versions.txt',
+      'dist-location':'pypi.nfgs.net:/var/www/packages/ripe',
+      'build-name': 'cosent.buildtools'}
+    arguments = defaults
+
+You will now have a separate ``bin/release`` script that is set up with the defaults, which means you can simply run::
+
+    bin/release status
+    bin/release cook
+    bin/release release
 
 
 bumpversion

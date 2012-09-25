@@ -228,8 +228,14 @@ def buildtool_release(versionsfile,
     git_push(BASEDIR, noact)
 
 
-def main():
+def main(defaults={}):
     parser = OptionParser()
+    if 'versions-file' in defaults:
+        parser.set_defaults(versionsfile=defaults['versions-file'])
+    if 'dist-location' in defaults:
+        parser.set_defaults(distlocation=defaults['dist-location'])
+    if 'build-name' in defaults:
+        parser.set_defaults(buildname=defaults['build-name'])
     parser.add_option("-f", "--final",
                       action="store_true", dest="final", default=False,
                       help="Bump a final version")
@@ -242,12 +248,13 @@ def main():
     parser.add_option("-v", "--versions-file",
                       action="store", dest="versionsfile",
                       help="Path to versions.txt.")
-    parser.add_option("-b", "--buildout-name",
+    parser.add_option("-b", "--build-name",
                       action="store", dest="buildname",
                       help="Name for this buildout.")
     parser.add_option("-s", "--skip-checks",
                       action="store_true", dest="force",
                       help="Skip sanity checks.")
+    usage = _usage % dict(script=sys.argv[0])
     parser.set_usage(usage)
     (options, args) = parser.parse_args()
     if not args:
@@ -283,19 +290,18 @@ def main():
             print(usage)
             return
 
+_usage = """
 
-usage = """
-
-buildtool status
+%(script)s status
     List uncommitted changes in all working trees.
 
-buildtool [-n] [-f] cook
+%(script)s [-n] [-f] cook
     Bump version, commit and tag all eggs that have unreleased commits.
 
     [-n]          dry run, no changes
     [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
 
-buildtool [-n] [-f] <-v versions> <-d dist> [-b name] release
+%(script)s [-n] [-f] <-v versions> <-d dist> [-b name] release
     Release all changed eggs (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
@@ -305,7 +311,7 @@ buildtool [-n] [-f] <-v versions> <-d dist> [-b name] release
     [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
     <-v versions> path to buildout versions.txt file
     <-d dist>     pypirc dist location to use for uploading eggs
-    [-b name]     name of current buildout, defaults to dirname
+    [-b name]     build name, defaults to name of buildout directory
 
 """
 
