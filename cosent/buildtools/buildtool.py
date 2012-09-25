@@ -154,7 +154,7 @@ def mkrelease(path, dist, noact=False):
     print("mkrelease %s" % " ".join(args))
     exit_code = jarn_mkrelease(args)
     if exit_code != 0:
-        raise Exception
+        raise Exception("jarn.mkrelease failed, aborting.")
 
 
 def buildtool_status():
