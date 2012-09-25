@@ -19,12 +19,6 @@ Cosent.buildtools will:
 * Commit, tag and release the buildout itself.
 
 
-TODO/bugs
----------
-
-* ``buildtool release`` currently breaks on the absence of ssh credentials. Uploading won't work yet.
-
-
 Assumptions/requirements/limitations
 ------------------------------------
 

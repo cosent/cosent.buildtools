@@ -151,7 +151,9 @@ def mkrelease(path, dist, noact=False):
         args.append("-n")
     args.append("-d %s" % dist)
     args.append(path)
-    print("mkrelease %s" % " ".join(args))
+    # merge and resplit
+    args = " ".join(args).split()
+    print("mkrelease %s" % args)
     exit_code = jarn_mkrelease(args)
     if exit_code != 0:
         print("jarn.mkrelease failed, aborting.")
