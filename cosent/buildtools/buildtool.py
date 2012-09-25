@@ -75,7 +75,7 @@ def version_is_tagged(path):
 
 
 def version_is_current(path):
-    cmd = subprocess.Popen("git tag -l",
+    cmd = subprocess.Popen("git tag --contains HEAD",
                            shell=True,
                            cwd=path,
                            stdin=subprocess.PIPE,
@@ -202,12 +202,8 @@ def buildtool_release(versionsfile,
 
     vp = VersionParser(versionsfile)
 
-    # buildout version. requires a setup.py
-    buildout_version = bv.bump_pkg(BASEDIR, final, noact)
-    # release tag is identical across repos: build.name=0.4rc3
-    release_tag = "%s=%s" % (buildname, buildout_version),
-
-    # release, and tag buildout version on all eggs
+    # release changed eggs
+    changed = []
     for (pkg, path) in devel_eggs().items():
         print("\n--- %s ---" % pkg)
         oldversion = vp.get_version(pkg)
@@ -215,12 +211,26 @@ def buildtool_release(versionsfile,
         if oldversion == newversion:
             print("%s: == %s" % (pkg, oldversion))
         else:
+            changed.append(pkg)
             print("%s: %s -> %s" % (pkg, oldversion, newversion))
             vp.set_version(pkg, newversion)
             mkrelease(path, distlocation, noact)
-            # this adds the buildout version tag to all eggs
-            git_tag(path, release_tag, noact)
-            git_push(path, noact)
+
+    if not changed and version_is_current(BASEDIR):
+        print("Nothing changed, nothing to release. Aborting.")
+        return
+
+    # buildout version. requires a setup.py
+    buildout_version = bv.bump_pkg(BASEDIR, final, noact)
+    # release tag is identical across repos: build.name=0.4rc3
+    release_tag = "%s=%s" % (buildname, buildout_version),
+
+    # release, and tag buildout version on all eggs
+    for (pkg, path) in devel_eggs().items():
+
+        # this adds the buildout version tag to all eggs
+        git_tag(path, release_tag, noact)
+        git_push(path, noact)
 
     if not noact:
         vp.write()
