@@ -199,6 +199,8 @@ def buildtool_release(versionsfile,
 
     # buildout version. requires a setup.py
     buildout_version = bv.bump_pkg(BASEDIR, final, noact)
+    # release tag is identical across repos: build.name=0.4rc3
+    release_tag = "%s=%s" % (buildname, buildout_version),
 
     # release, and tag buildout version on all eggs
     for (pkg, path) in devel_eggs().items():
@@ -212,9 +214,7 @@ def buildtool_release(versionsfile,
             vp.set_version(pkg, newversion)
             mkrelease(path, distlocation, noact)
             # this adds the buildout version tag to all eggs
-            git_tag(path,
-                    "%s=%s" % (buildname, buildout_version),
-                    noact)
+            git_tag(path, release_tag, noact)
             git_push(path, noact)
 
     if not noact:
@@ -223,7 +223,7 @@ def buildtool_release(versionsfile,
     print("\n====== %s ======" % buildname)
     vp.set_version(buildname, buildout_version)
     git_commit(BASEDIR, buildout_version, noact)
-    git_tag(BASEDIR, buildout_version, noact)
+    git_tag(BASEDIR, release_tag, noact)
     mkrelease(BASEDIR, distlocation, noact)
     git_push(BASEDIR, noact)
 
