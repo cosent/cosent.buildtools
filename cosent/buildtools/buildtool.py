@@ -233,6 +233,28 @@ def buildtool_release(versionsfile,
     git_push(BASEDIR, noact)
 
 
+def git_all(args, noact=False):
+    for (pkg, path) in devel_eggs().items():
+        print("\n--- %s ---" % pkg)
+        git_cmd(path, args, noact)
+    print("\n====== %s ======" % BASEDIR)
+    git_cmd(BASEDIR, args, noact)
+
+
+def git_cmd(path, args, noact=False):
+    git = "git %s" % " ".join(args)
+    print("%s: %s" % (path, git))
+    if noact:
+        return
+    cmd = subprocess.Popen(git,
+                           shell=True,
+                           cwd=path,
+                           stdin=subprocess.PIPE,
+                           stdout=subprocess.PIPE)
+    stdout, stderr = cmd.communicate()
+    print(stdout)
+
+
 def main(defaults={}):
     parser = OptionParser()
     if 'versions-file' in defaults:
@@ -266,34 +288,43 @@ def main(defaults={}):
         print(usage)
         return
 
-    for cmd in args:
+    cmd = args[0]
 
-        if cmd == 'status':
-            buildtool_status()
+    if cmd == 'status':
+        buildtool_status()
 
-        elif cmd == 'cook':
-            buildtool_cook(options.final, options.noact, options.force)
+    elif cmd == 'cook':
+        buildtool_cook(options.final, options.noact, options.force)
 
-        elif cmd == 'release':
-            if not options.versionsfile:
-                print("Missing argument: -v VERSIONSFILE")
-                print(usage)
-                return
-            if not options.distlocation:
-                print("Missing argument: -d DISTLOCATION")
-                print(usage)
-                return
-
-            buildtool_release(options.versionsfile,
-                              options.distlocation,
-                              options.buildname,
-                              options.final,
-                              options.noact,
-                              options.force)
-        else:
-            print "No such command: %s" % cmd
+    elif cmd == 'release':
+        if not options.versionsfile:
+            print("Missing argument: -v VERSIONSFILE")
             print(usage)
             return
+        if not options.distlocation:
+            print("Missing argument: -d DISTLOCATION")
+            print(usage)
+            return
+
+        buildtool_release(options.versionsfile,
+                          options.distlocation,
+                          options.buildname,
+                          options.final,
+                          options.noact,
+                          options.force)
+
+    elif cmd == 'git':
+        gitargs = args[1:]
+        if gitargs:
+            git_all(gitargs, options.noact)
+        else:
+            print("'%s git log', or '%s git whatchanged', or ...?"
+                  % (sys.argv[0], sys.argv[0]))
+
+    else:
+        print "No such command: %s" % cmd
+        print(usage)
+        return
 
 _usage = """
 
@@ -317,6 +348,10 @@ _usage = """
     <-v versions> path to buildout versions.txt file
     <-d dist>     pypirc dist location to use for uploading eggs
     [-b name]     build name, defaults to name of buildout directory
+
+%(script)s git <gitargs>
+    Run 'git gitargs' on all development eggs, and on the buildout itself.
+    For example: 'git whatchanged sometag'
 
 """
 

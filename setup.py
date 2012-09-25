@@ -8,7 +8,7 @@ setup(name='cosent.buildtools',
       description="Release scripts",
       long_description=open('README.rst').read(),
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 4 - Beta',
           'Environment :: Console',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: GPL License',

@@ -79,10 +79,21 @@ buildtool
     <-d dist>     pypirc dist location to use for uploading eggs
     [-b name]     name of current buildout, defaults to dirname
 
+*buildtool git* runs a git command on all eggs and on the buildout::
+
+  buildtool git <gitargs>
+    Run 'git gitargs' on all development eggs, and on the buildout itself.
+    For example: 'git whatchanged sometag'
+
+
 Example run::
 
-    bin/buildtool status
-    bin/buildtool cook
+    bin/buildtool git tag                  # list tags
+    bin/buildtool git whatchanged sometag  # list changes since last release
+
+    bin/buildtool status                   # check that we're clean
+    bin/buildtool cook                     # prepare release
+    # the actual release
     bin/buildtool -v versions.txt -d your.server:/var/pypi release
 
 Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work, unless you use the -s (--skip-checks) switch.
