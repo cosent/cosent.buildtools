@@ -81,9 +81,9 @@ def version_is_current(path):
                            stdin=subprocess.PIPE,
                            stdout=subprocess.PIPE)
     stdout, stderr = cmd.communicate()
-    head = stdout.strip().split('\n')[0]
+    tags = stdout.strip().split('\n')
     version = bv.pkg_version(path)
-    return version == head
+    return version in tags
 
 
 def git_tag(path, tag, noact=False):
