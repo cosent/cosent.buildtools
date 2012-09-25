@@ -238,6 +238,9 @@ def buildtool_release(versionsfile,
     print("\n====== %s ======" % buildname)
     vp.set_version(buildname, buildout_version)
     git_commit(BASEDIR, buildout_version, noact)
+    # version tag to match setup.py version
+    git_tag(BASEDIR, buildout_version, noact)
+    # release tag to match egg release tags
     git_tag(BASEDIR, release_tag, noact)
     mkrelease(BASEDIR, distlocation, noact)
     git_push(BASEDIR, noact)
