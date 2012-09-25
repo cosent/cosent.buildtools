@@ -152,7 +152,9 @@ def mkrelease(path, dist, noact=False):
     args.append("-d %s" % dist)
     args.append(path)
     print("mkrelease %s" % " ".join(args))
-    jarn_mkrelease(args)
+    exit_code = jarn_mkrelease(args)
+    if exit_code != 0:
+        raise Exception
 
 
 def buildtool_status():
