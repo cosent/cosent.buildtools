@@ -4,7 +4,9 @@ buildout: bin/buildout
 	@bin/buildout
 
 test:
+	git stash
 	@bin/test --with-coverage --cover-package=cosent.buildtools --cover-erase
+	git stash pop
 
 bin/buildout: bin/python2.6
 	@wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
