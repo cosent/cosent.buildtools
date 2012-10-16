@@ -70,7 +70,7 @@ def version_is_tagged(path):
                            stdout=subprocess.PIPE)
     stdout, stderr = cmd.communicate()
     tags = stdout.strip().split('\n')
-    version = bv.get_version("%s/setup.py" % path)
+    version = bv.get_version(path, True)
     return version in tags
 
 

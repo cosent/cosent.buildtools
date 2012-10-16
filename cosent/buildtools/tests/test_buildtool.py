@@ -4,6 +4,7 @@ import subprocess
 import tempfile
 
 from cosent.buildtools import buildtool as bt
+from cosent.buildtools import bumpversion as bv
 
 dummypath = "%s/src/dummypackage" % os.getcwd()
 
@@ -37,10 +38,12 @@ class TestGit(unittest.TestCase):
         subprocess.call(["rm", marker])
 
     def test_version_is_tagged(self):
-        self.assertFalse(bt.version_is_tagged(dummypath))
+        self.assertTrue(bt.version_is_tagged(dummypath),
+                        bv.get_version(dummypath, True))
 
     def test_version_is_current(self):
-        self.assertFalse(bt.version_is_current(dummypath))
+        self.assertTrue(bt.version_is_current(dummypath),
+                        bv.get_version(dummypath, True))
 
 
 class TestDevelEggs(unittest.TestCase):

@@ -31,9 +31,9 @@ class TestRewriteSetup(unittest.TestCase):
 
     def setUp(self):
         # populate a tmp file from our dummy template
-        dummy_path = '%s/cosent/buildtools/tests/_dummysetup.py' % (
+        setup_template = '%s/cosent/buildtools/tests/_dummysetup.py' % (
             os.getcwd())
-        with open(dummy_path, 'r') as fh:
+        with open(setup_template, 'r') as fh:
             dummy_setup = fh.read()
         (_osfh, setup_filename) = tempfile.mkstemp()
         os.close(_osfh)  # don't use the low-level IO
@@ -41,19 +41,18 @@ class TestRewriteSetup(unittest.TestCase):
             fh.write(dummy_setup)
 
         # for use in tests
-        self.temp_filename = setup_filename
-        self.dummy_filename = dummy_path
+        self.setup_filename = setup_filename
         self.dummy_setup = dummy_setup
 
     def tearDown(self):
-        os.remove(self.temp_filename)
+        os.remove(self.setup_filename)
 
     def test_get_version(self):
-        self.assertEquals(bv.get_version(self.dummy_setup.splitlines()), '0.1')
+        self.assertEquals(bv.get_version(self.setup_filename), '0.1')
 
     def test_bump_setup_py_rc(self):
-        bv.bump_setup_py(self.temp_filename)
-        with open(self.temp_filename, 'r') as fh:
+        bv.bump_setup_py(self.setup_filename)
+        with open(self.setup_filename, 'r') as fh:
             new_setup = fh.read().splitlines()
         diff = []
         for oldline in self.dummy_setup.splitlines():
@@ -63,8 +62,8 @@ class TestRewriteSetup(unittest.TestCase):
         self.assertEquals(diff, [("version = '0.1'", "version = '0.2rc1'")])
 
     def test_bump_setup_py_final(self):
-        bv.bump_setup_py(self.temp_filename, final=True)
-        with open(self.temp_filename, 'r') as fh:
+        bv.bump_setup_py(self.setup_filename, final=True)
+        with open(self.setup_filename, 'r') as fh:
             new_setup = fh.read().splitlines()
         diff = []
         for oldline in self.dummy_setup.splitlines():

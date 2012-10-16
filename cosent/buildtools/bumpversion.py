@@ -20,18 +20,21 @@ def bump_final(version):
         return '.'.join(parts).strip('.')
 
 
-def get_version(setup):
+def get_version(path, append_setup_py=False):
+    if append_setup_py:
+        path += "/setup.py"
+
+    with open(path, 'r') as fh:
+        setup = fh.read().splitlines()
     for line in setup:
         if line.startswith("version"):
             version = line.split('=')[1].strip()
             return version.replace('"', '').replace("'", "")
+    raise AttributeError("no version in file:", setup)
 
 
 def pkg_version(pkgpath):
-    filepath = '%s/setup.py' % pkgpath
-    with open(filepath, 'r') as fh:
-        setup = fh.readlines()
-    return get_version(setup)
+    return get_version(pkgpath, True)
 
 
 def bump_pkg(pkgpath, final=False, noact=False):
@@ -47,10 +50,9 @@ def bump_setup_py(filepath, final=False, noact=False):
 
     Writes back the changed file.
     """
-
+    version = get_version(filepath)
     with open(filepath, 'r+') as fh:
         setup = fh.readlines()
-        version = get_version(setup)
         if final:
             new_version = bump_final(version)
         else:
