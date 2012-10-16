@@ -45,8 +45,8 @@ def git_status(path):
 
 
 def is_git_clean(path):
-    lines = git_status(path).split('\n')
-    if 'nothing to commit (working directory clean)' in lines[-1]:
+    status = git_status(path)
+    if 'nothing to commit (working directory clean)' in status:
         return True
     else:
         return False

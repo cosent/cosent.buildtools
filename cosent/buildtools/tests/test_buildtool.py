@@ -28,10 +28,10 @@ class TestGit(unittest.TestCase):
         self.assertFalse(bt.is_git_clean(dummypath))
         subprocess.call(["rm", marker])
 
-    def XXtest_all_clean_true(self):
+    def test_all_clean_true(self):
         self.assertTrue(bt.is_all_clean())
 
-    def XXtest_all_clean_false(self):
+    def test_all_clean_false(self):
         marker = "%s/REMOVE_THIS_FILE" % dummypath
         subprocess.call(["touch", marker])
         self.assertFalse(bt.is_all_clean())
