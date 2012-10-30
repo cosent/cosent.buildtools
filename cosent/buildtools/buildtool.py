@@ -176,12 +176,14 @@ def buildtool_cook(final=False, noact=False, force=False):
 
     # commit, and tag egg versions
     for (pkg, path) in devel_eggs().items():
-        if not tagged_version_is_head(path):
+        if version_is_tagged(path) and tagged_version_is_head(path):
+            # already released, unchanged
+            print('%s: == %s' % (path, bv.pkg_version(path)))
+        else:
+            # unreleased, bump version
             new_version = bv.bump_pkg(path, final, noact)
             git_commit(path, new_version, noact)
             git_tag(path, new_version, noact)
-        else:
-            print('%s: == %s' % (path, bv.pkg_version(path)))
 
 
 def buildtool_release(versionsfile,
