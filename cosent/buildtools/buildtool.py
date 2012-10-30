@@ -74,7 +74,7 @@ def version_is_tagged(path):
     return version in tags
 
 
-def version_is_current(path):
+def tagged_version_is_head(path):
     cmd = subprocess.Popen("git tag --contains HEAD",
                            shell=True,
                            cwd=path,
@@ -176,7 +176,7 @@ def buildtool_cook(final=False, noact=False, force=False):
 
     # commit, and tag egg versions
     for (pkg, path) in devel_eggs().items():
-        if not version_is_current(path):
+        if not tagged_version_is_head(path):
             new_version = bv.bump_pkg(path, final, noact)
             git_commit(path, new_version, noact)
             git_tag(path, new_version, noact)
@@ -216,7 +216,7 @@ def buildtool_release(versionsfile,
             vp.set_version(pkg, newversion)
             mkrelease(path, distlocation, noact)
 
-    if not changed and version_is_current(BASEDIR):
+    if not changed and tagged_version_is_head(BASEDIR):
         print("Nothing changed, nothing to release. Aborting.")
         return
 

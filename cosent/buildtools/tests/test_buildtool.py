@@ -41,8 +41,8 @@ class TestGit(unittest.TestCase):
         self.assertTrue(bt.version_is_tagged(dummypath),
                         bv.get_version(dummypath, True))
 
-    def test_version_is_current(self):
-        self.assertTrue(bt.version_is_current(dummypath),
+    def test_tagged_version_is_head(self):
+        self.assertTrue(bt.tagged_version_is_head(dummypath),
                         bv.get_version(dummypath, True))
 
 
