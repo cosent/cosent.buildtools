@@ -3,15 +3,23 @@ import sys
 
 
 def bump_rc(version):
-    if 'rc' in version:
+    if 'dev' in version:
+        final, dev = version.split('dev')
+        return "%src1" % final
+    elif 'rc' in version:
         final, rc = version.split('rc')
+        if rc == '':
+            rc = 0
         return "%src%s" % (final, int(rc) + 1)
     else:
         return bump_final(version) + 'rc1'
 
 
 def bump_final(version):
-    if 'rc' in version:
+    if 'dev' in version:
+        final, dev = version.split('dev')
+        return final.strip('.')
+    elif 'rc' in version:
         final, rc = version.split('rc')
         return final.strip('.')
     else:

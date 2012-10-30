@@ -7,7 +7,18 @@ from cosent.buildtools import bumpversion as bv
 
 class TestBumpVersion(unittest.TestCase):
 
+    def test_dev2rc(self):
+        self.assertEquals(bv.bump_rc('2.8dev'), '2.8rc1')
+        self.assertEquals(bv.bump_rc('2.8dev1'), '2.8rc1')
+        self.assertEquals(bv.bump_rc('2.8.dev19'), '2.8.rc1')
+
+    def test_dev2final(self):
+        self.assertEquals(bv.bump_final('2.8dev'), '2.8')
+        self.assertEquals(bv.bump_final('2.8dev1'), '2.8')
+        self.assertEquals(bv.bump_final('2.8.dev19'), '2.8')
+
     def test_rc2rc(self):
+        self.assertEquals(bv.bump_rc('2.8rc'), '2.8rc1')
         self.assertEquals(bv.bump_rc('2.8rc1'), '2.8rc2')
         self.assertEquals(bv.bump_rc('2.8rc9'), '2.8rc10')
         self.assertEquals(bv.bump_rc('2.8rc19'), '2.8rc20')

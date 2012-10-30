@@ -27,7 +27,7 @@ Assumptions/requirements/limitations
 * You have a [versions] section in the buildout configuration
 * The buildout itself is a python egg with a setup.py version number
 * The buildout and all development eggs are under git version control
-* The versioning algorithm understands only a very simple versioning scheme, like 0.2 and 0.2rc4. See below.
+* The versioning algorithm understands only a very simple versioning scheme, like 0.2, 0.2dev and 0.2rc4. See below.
 
 This suites the release patterns used at `Cosent`_. YMMV.
 
@@ -142,15 +142,17 @@ Version algorithm is as follows:
 * rc (release candidate)::
 
     2.7    -> 2.8rc1
+    2.8dev -> 2.8rc1
     2.8rc1 -> 2.8rc2
 
 * final (actual release)::
 
     2.7    -> 2.8
+    2.8dev -> 2.8
     2.8rc2 -> 2.8
 
-The algorithm is dumb and only understands major.minor + rc.
-Different version numbers like 2.7dev4, 2.8b3, 2.8-fix2 will cause breakage. 
+The algorithm is dumb and only understands major.minor + "rc|dev" + seq.
+Different version numbers like 2.8b3, 2.8-fix2 will cause breakage. 
 
 
 .. _Cosent: http://cosent.nl
