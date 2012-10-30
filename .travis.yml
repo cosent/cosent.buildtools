@@ -1,0 +1,6 @@
+language: python
+python: 2.6
+install: make buildout
+script: bin/test
+notifications:
+  email: guido.stevens@cosent.net
