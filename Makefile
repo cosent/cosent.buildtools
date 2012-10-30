@@ -14,3 +14,8 @@ bin/buildout: bin/python2.6
 
 bin/python2.6:
 	@virtualenv --clear -p python2.6 --no-site-packages --distribute .
+
+travis:
+	wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
+	python bootstrap.py
+	bin/buildout
