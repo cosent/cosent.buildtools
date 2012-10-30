@@ -18,6 +18,20 @@ class TestGit(unittest.TestCase):
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
         stdout, stderr = cmd.communicate()
+        cmd = subprocess.Popen("git stash",
+                               shell=True,
+                               cwd=os.getcwd(),
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE)
+        stdout, stderr = cmd.communicate()
+
+    def tearDown(self):
+        cmd = subprocess.Popen("git stash pop",
+                               shell=True,
+                               cwd=os.getcwd(),
+                               stdin=subprocess.PIPE,
+                               stdout=subprocess.PIPE)
+        stdout, stderr = cmd.communicate()
 
     def test_git_clean_true(self):
         self.assertTrue(bt.is_git_clean(dummypath))
