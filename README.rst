@@ -1,9 +1,9 @@
-Low-level buildout helper scripts to manage complex buildout releases.
+.. image:: https://secure.travis-ci.org/cosent/cosent.buildtools.png
+    :target: http://travis-ci.org/cosent/cosent.buildtools
 
-Status: beta.
 
-Summary
-=======
+Introduction
+============
 
 Cosent.buildtools allows you to release a buildout with multiple development eggs in one go. 
 
