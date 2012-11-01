@@ -134,7 +134,7 @@ def devel_eggs():
     packages = stdout.strip().split('\n')
     pkginfo = {}
     for pkg in packages:
-        cmd = subprocess.Popen(["bin/develop info -p", pkg],
+        cmd = subprocess.Popen("bin/develop info -p %s" % pkg,
                                shell=True,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
