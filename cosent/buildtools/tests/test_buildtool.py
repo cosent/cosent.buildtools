@@ -12,20 +12,28 @@ dummypath = "%s/src/dummypackage" % os.getcwd()
 class TestGit(unittest.TestCase):
 
     def setUp(self):
+        # reset src/dummypackage
         cmd = subprocess.Popen("git reset --hard HEAD",
                                shell=True,
                                cwd=dummypath,
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
         stdout, stderr = cmd.communicate()
+        # stash cosent.buildtools
         cmd = subprocess.Popen("git stash",
                                shell=True,
                                cwd=os.getcwd(),
                                stdin=subprocess.PIPE,
                                stdout=subprocess.PIPE)
         stdout, stderr = cmd.communicate()
+        if 'HEAD is now at' in stdout:
+            self.stashed = True
+        else:
+            self.stashed = False
 
     def tearDown(self):
+        if not self.stashed:
+            return
         cmd = subprocess.Popen("git stash pop",
                                shell=True,
                                cwd=os.getcwd(),
