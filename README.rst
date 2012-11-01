@@ -64,10 +64,10 @@ buildtool
     [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
     [-s]          skip sanity check: force
 
-*buildtool release* releases all eggs and the buildout itself in one go::
+*buildtool dist* releases all eggs and the buildout itself in one go::
 
-  buildtool [-n] [-f] [-s] <-v versions> <-d dist> [-b name] release
-    Release all changed eggs (via jarn.mkrelease).
+  buildtool [-n] [-f] [-s] <-v versions> <-d dist> [-b name] dist
+    Release and upload all changed eggs to distserver (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
     Push all commits and tags in all eggs and the buildout.
@@ -94,7 +94,7 @@ Example run::
     bin/buildtool status                   # check that we're clean
     bin/buildtool cook                     # prepare release
     # the actual release
-    bin/buildtool -v versions.txt -d your.server:/var/pypi release
+    bin/buildtool -v versions.txt -d your.server:/var/pypi dist
 
 Contrary to jarn.mkrelease, buildtool expects clean sandboxes. It will abort if it encounters uncommitted work, unless you use the -s (--skip-checks) switch.
 
@@ -115,11 +115,13 @@ If you modify your buildout like this::
       'build-name': 'cosent.buildtools'}
     arguments = defaults
 
+Where of course you'll need to supply your own dist-location, and set build-name to your own project name.
+
 You will now have a separate ``bin/release`` script that is set up with the defaults, which means you can simply run::
 
     bin/release status
     bin/release cook
-    bin/release release
+    bin/release dist
 
 
 bumpversion

@@ -186,12 +186,12 @@ def buildtool_cook(final=False, noact=False, force=False):
             git_tag(path, new_version, noact)
 
 
-def buildtool_release(versionsfile,
-                      distlocation,
-                      buildname=None,
-                      final=False,
-                      noact=False,
-                      force=False):
+def buildtool_dist(versionsfile,
+                   distlocation,
+                   buildname=None,
+                   final=False,
+                   noact=False,
+                   force=False):
     assert versionsfile
     assert distlocation
     if not buildname:
@@ -311,7 +311,7 @@ def main(defaults={}):
     elif cmd == 'cook':
         buildtool_cook(options.final, options.noact, options.force)
 
-    elif cmd == 'release':
+    elif cmd == 'dist':
         if not options.versionsfile:
             print("Missing argument: -v VERSIONSFILE")
             print(usage)
@@ -321,12 +321,12 @@ def main(defaults={}):
             print(usage)
             return
 
-        buildtool_release(options.versionsfile,
-                          options.distlocation,
-                          options.buildname,
-                          options.final,
-                          options.noact,
-                          options.force)
+        buildtool_dist(options.versionsfile,
+                       options.distlocation,
+                       options.buildname,
+                       options.final,
+                       options.noact,
+                       options.force)
 
     elif cmd == 'git':
         gitargs = args[1:]
@@ -352,8 +352,8 @@ _usage = """
     [-n]          dry run, no changes
     [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
 
-%(script)s [-n] [-f] <-v versions> <-d dist> [-b name] release
-    Release all changed eggs (via jarn.mkrelease).
+%(script)s [-n] [-f] <-v versions> <-d dist> [-b name] dist
+    Release and upload all changed eggs to distserver (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
     Push all commits and tags in all eggs and the buildout.
