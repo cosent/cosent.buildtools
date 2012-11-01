@@ -17,4 +17,8 @@ bin/python2.6:
 travis:
 	wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
 	python bootstrap.py
+	rm bootstrap.*
 	bin/buildout
+
+clean:
+	rm -rf bin/* .installed.cfg bootstrap.*
