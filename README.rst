@@ -83,7 +83,8 @@ buildtool
 
   buildtool git <gitargs>
     Run 'git gitargs' on all development eggs, and on the buildout itself.
-    For example: 'git whatchanged sometag'
+    Insert '--' to escape arguments passed to git.
+    For example: 'bin/buildtool git -- log --oneline HEAD^^..'
 
 
 Example run::

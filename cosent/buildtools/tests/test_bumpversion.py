@@ -19,6 +19,7 @@ class TestBumpVersion(unittest.TestCase):
 
     def test_rc2rc(self):
         self.assertEquals(bv.bump_rc('2.8rc'), '2.8rc1')
+        self.assertEquals(bv.bump_rc('2.8.rc0'), '2.8.rc1')
         self.assertEquals(bv.bump_rc('2.8rc1'), '2.8rc2')
         self.assertEquals(bv.bump_rc('2.8rc9'), '2.8rc10')
         self.assertEquals(bv.bump_rc('2.8rc19'), '2.8rc20')
