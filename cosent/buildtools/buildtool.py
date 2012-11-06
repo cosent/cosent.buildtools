@@ -249,6 +249,7 @@ def buildtool_dist(versionsfile,
 
 
 def git_all(args, noact=False):
+    print "Inspecting devel eggs, hang on..."
     for (pkg, path) in devel_eggs().items():
         print("\n--- %s ---" % pkg)
         git_cmd(path, args, noact)
