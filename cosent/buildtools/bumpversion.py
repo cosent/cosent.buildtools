@@ -10,6 +10,8 @@ def bump_rc(version):
         final, rc = version.split('rc')
         if rc == '':
             rc = 0
+        elif '.' in rc:
+            rc = rc.split('.')[0]
         return "%src%s" % (final, int(rc) + 1)
     else:
         return bump_final(version) + 'rc1'

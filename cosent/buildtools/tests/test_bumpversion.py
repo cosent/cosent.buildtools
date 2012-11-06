@@ -37,6 +37,14 @@ class TestBumpVersion(unittest.TestCase):
         self.assertEquals(bv.bump_final('2.8rc3'), '2.8')
         self.assertEquals(bv.bump_final('2.8.rc3'), '2.8')
 
+    def test_longnumbers(self):
+        self.assertEquals(bv.bump_rc('3.4.5.6'), '3.4.5.7rc1')
+        self.assertEquals(bv.bump_final('3.4.5.6'), '3.4.5.7')
+
+    def test_weird(self):
+        self.assertEquals(bv.bump_rc('3.4.rc5.7'), '3.4.rc6')
+        self.assertEquals(bv.bump_final('3.4.rc5.7'), '3.4')
+
 
 class TestRewriteSetup(unittest.TestCase):
 
