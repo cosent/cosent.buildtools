@@ -124,8 +124,10 @@ class TestVersionParser(unittest.TestCase):
 
 dummy_versions = """[versions]
 foo.bar = 0.2rc3
+Products.baz = 0.3.rc5
 """
 
 new_versions = """[versions]
 foo.bar = 0.2rc4
+Products.baz = 0.3.rc5
 """

@@ -17,6 +17,8 @@ class VersionParser(object):
         assert versionsfile
         self.versionsfile = versionsfile
         self.versions = ConfigParser()
+        # disable the default lowercase transformation
+        self.versions.optionxform = lambda option: option
         if not self.versions.read(versionsfile):
             raise(AssertionError("Invalid file: %s" % versionsfile))
         assert self.versions.has_section("versions")
