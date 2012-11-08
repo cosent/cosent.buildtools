@@ -61,11 +61,19 @@ class TestGit(unittest.TestCase):
 
     def test_version_is_tagged(self):
         self.assertTrue(bt.version_is_tagged(dummypath),
-                        bv.get_version(dummypath, True))
+                        bv.pkg_version(dummypath))
 
     def test_tagged_version_is_head(self):
         self.assertTrue(bt.tagged_version_is_head(dummypath),
-                        bv.get_version(dummypath, True))
+                        bv.pkg_version(dummypath))
+
+    def test_version_is_final(self):
+        bv.bump_pkg(dummypath, final=False)
+        self.assertFalse(bt.version_is_final(dummypath),
+                         bv.pkg_version(dummypath))
+        bv.bump_pkg(dummypath, final=True)
+        self.assertTrue(bt.version_is_final(dummypath),
+                        bv.pkg_version(dummypath))
 
 
 class TestDevelEggs(unittest.TestCase):

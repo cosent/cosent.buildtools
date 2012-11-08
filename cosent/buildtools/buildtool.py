@@ -88,6 +88,11 @@ def tagged_version_is_head(path):
     return version in tags
 
 
+def version_is_final(path):
+    version = bv.pkg_version(path)
+    return 'rc' not in version and 'dev' not in version
+
+
 def git_tag(path, tag, noact=False):
     git = "git tag %s" % tag
     print("%s: %s" % (path, git))
@@ -178,14 +183,28 @@ def buildtool_cook(final=False, noact=False, force=False):
 
     # commit, and tag egg versions
     for (pkg, path) in devel_eggs().items():
-        if version_is_tagged(path) and tagged_version_is_head(path):
-            # already released, unchanged
-            print('%s: == %s' % (path, bv.pkg_version(path)))
-        else:
-            # unreleased, bump version
+        if should_cook(path, final):
             new_version = bv.bump_pkg(path, final, noact)
             git_commit(path, new_version, noact)
             git_tag(path, new_version, noact)
+        else:
+            # already released, unchanged
+            print('%s: == %s' % (path, bv.pkg_version(path)))
+
+
+def should_cook(path, final=False):
+    if not version_is_tagged(path):
+        # no tags at all, cook a release
+        return True
+    elif final and not version_is_final(path):
+        # force rc->final version bump even if no code changes
+        return True
+    elif tagged_version_is_head(path):
+        # already released, leave unchanged
+        return False
+    else:
+        # code changed, cook
+        return True
 
 
 def buildtool_dist(versionsfile,
