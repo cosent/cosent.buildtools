@@ -11,7 +11,7 @@ The intent is, to offer at the buildout/project level, the convenience that `jar
 
 Cosent.buildtools will:
 
-* Generate a new version number for any development eggs with unreleased changes.
+* Generate a new version number for any development eggs with unreleased changes; also for any RC released eggs if you're doing a 'final' release.
 * Commit, tag and release all changed development eggs.
 * Update the buildout version.txt to reflect the newly released eggs.
 * Generate and store a new version number for the buildout itself.
@@ -83,8 +83,10 @@ buildtool
 
   buildtool git <gitargs>
     Run 'git gitargs' on all development eggs, and on the buildout itself.
-    Insert '--' to escape arguments passed to git.
-    For example: 'bin/buildtool git -- log --oneline HEAD^^..'
+    Insert '--' or use extra quoting to escape arguments passed to git.
+    Examples:
+        bin/buildtool git -- log --oneline HEAD^^..
+        bin/buildtool git "commit -a -m 'your commit message'"
 
 
 Example run::
@@ -112,11 +114,11 @@ If you modify your buildout like this::
     scripts = buildtool=release
     initialization = defaults = {
       'versions-file':'versions.txt',
-      'dist-location':'pypi.nfgs.net:/var/www/packages/ripe',
+      'dist-location':'pypi',
       'build-name': 'cosent.buildtools'}
     arguments = defaults
 
-Where of course you'll need to supply your own dist-location, and set build-name to your own project name.
+Where of course you'll need to supply your own dist-location, for example 'your.server.net:/var/www/packages/local' and set build-name to your own project name. You can use any dist-location jarn.mkrelease accepts, including aliases defined in your .pypirc.
 
 You will now have a separate ``bin/release`` script that is set up with the defaults, which means you can simply run::
 

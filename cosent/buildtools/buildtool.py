@@ -388,8 +388,10 @@ _usage = """
 
 %(script)s git <gitargs>
     Run 'git gitargs' on all development eggs, and on the buildout itself.
-    Insert '--' to escape arguments passed to git.
-    For example: 'bin/buildtool git -- log --oneline HEAD^^..'
+    Insert '--' or use extra quoting to escape arguments passed to git.
+    Examples:
+        bin/buildtool git -- log --oneline HEAD^^..
+        bin/buildtool git "commit -a -m 'your commit message'"
 
 """
 
