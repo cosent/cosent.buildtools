@@ -82,11 +82,13 @@ class TestRewriteSetup(unittest.TestCase):
         self.assertEquals(diff, [("version = '0.1'", "version = '0.2rc1'")])
 
     def test_bump_setup_py_final(self):
+        old_setup = self.dummy_setup.splitlines()
         bv.bump_setup_py(self.setup_filename, final=True)
         with open(self.setup_filename, 'r') as fh:
             new_setup = fh.read().splitlines()
         diff = []
-        for oldline in self.dummy_setup.splitlines():
+        self.assertEquals(len(old_setup), len(new_setup))
+        for oldline in old_setup:
             newline = new_setup.pop(0)
             if oldline != newline:
                 diff.append((oldline, newline))

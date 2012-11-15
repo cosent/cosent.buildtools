@@ -73,8 +73,8 @@ def bump_setup_py(filepath, final=False, noact=False):
                 new_setup.append("version = '%s'\n" % new_version)
             else:
                 new_setup.append(line)
-        if not noact:
-            fh.seek(0)
+    if not noact:
+        with open(filepath, 'w') as fh:
             fh.write(''.join(new_setup))
     print("%s: %s -> %s" % (filepath, version, new_version))
     return new_version
