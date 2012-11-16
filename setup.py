@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '1.0.rc5'
+version = '1.0.rc6'
 
 # http://pypi.python.org/pypi?%3Aaction=list_classifiers
 setup(name='cosent.buildtools',
