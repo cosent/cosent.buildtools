@@ -246,6 +246,7 @@ def buildtool_dist(versionsfile,
         print("Nothing changed, nothing to release. Aborting.")
         return
 
+    print("\n====== %s ======" % buildname)
     # buildout version. requires a setup.py
     buildout_version = bv.bump_pkg(BASEDIR, final, noact)
     # release tag is identical across repos: build.name=0.4rc3
@@ -261,7 +262,6 @@ def buildtool_dist(versionsfile,
     if not noact:
         vp.write()
 
-    print("\n====== %s ======" % buildname)
     vp.set_version(buildname, buildout_version)
     git_commit(BASEDIR, buildout_version, noact)
     # version tag to match setup.py version
