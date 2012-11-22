@@ -47,11 +47,11 @@ def pkg_version(pkgpath):
     return get_version(pkgpath, True)
 
 
-def bump_pkg(pkgpath, final=False, noact=False):
+def bump_pkg(pkgpath, final=True, noact=False):
     return bump_setup_py("%s/setup.py" % pkgpath, final, noact)
 
 
-def bump_setup_py(filepath, final=False, noact=False):
+def bump_setup_py(filepath, final=True, noact=False):
     """Update the version number in <filepath>
     which should be a setup.py file with egg metadata.
 

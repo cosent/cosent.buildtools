@@ -175,8 +175,8 @@ def buildtool_status():
         print(git_status(path))
 
 
-def buildtool_cook(final=True, noact=False, force=False):
-    if not force and not is_all_clean():
+def buildtool_cook(final=True, noact=False, skipchecks=False):
+    if not skipchecks and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
         return buildtool_status()
@@ -210,15 +210,15 @@ def should_cook(path, final=True):
 def buildtool_dist(versionsfile,
                    distlocation,
                    buildname=None,
-                   final=False,
+                   final=True,
                    noact=False,
-                   force=False):
+                   skipchecks=False):
     assert versionsfile
     assert distlocation
     if not buildname:
         buildname = BASEDIR.split('/')[-1]
 
-    if not force and not is_all_clean():
+    if not skipchecks and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
         return buildtool_status()
@@ -301,7 +301,7 @@ def main(defaults={}):
     if 'build-name' in defaults:
         parser.set_defaults(buildname=defaults['build-name'])
     parser.add_option("-c", "--release-candidate",
-                      action="store_true", dest="final", default=True,
+                      action="store_false", dest="final", default=True,
                       help="Bump a final version")
     parser.add_option("-n", "--dry-run",
                       action="store_true", dest="noact", default=False,
@@ -316,7 +316,7 @@ def main(defaults={}):
                       action="store", dest="buildname",
                       help="Name for this buildout.")
     parser.add_option("-s", "--skip-checks",
-                      action="store_true", dest="force",
+                      action="store_true", dest="skipchecks",
                       help="Skip sanity checks.")
     usage = _usage % dict(script=sys.argv[0])
     parser.set_usage(usage)
@@ -331,7 +331,7 @@ def main(defaults={}):
         buildtool_status()
 
     elif cmd == 'cook':
-        buildtool_cook(options.final, options.noact, options.force)
+        buildtool_cook(options.final, options.noact, options.skipchecks)
 
     elif cmd == 'dist':
         if not options.versionsfile:
@@ -348,7 +348,7 @@ def main(defaults={}):
                        options.buildname,
                        options.final,
                        options.noact,
-                       options.force)
+                       options.skipchecks)
 
     elif cmd == 'git':
         gitargs = args[1:]
