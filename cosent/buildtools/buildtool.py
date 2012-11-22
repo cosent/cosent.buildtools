@@ -175,7 +175,7 @@ def buildtool_status():
         print(git_status(path))
 
 
-def buildtool_cook(final=True, noact=False, skipchecks=False):
+def buildtool_cook(final=True, noact=False, skipchecks=False, force=False):
     if not skipchecks and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
@@ -183,7 +183,7 @@ def buildtool_cook(final=True, noact=False, skipchecks=False):
 
     # commit, and tag egg versions
     for (pkg, path) in devel_eggs().items():
-        if should_cook(path, final):
+        if should_cook(path, final, force):
             new_version = bv.bump_pkg(path, final, noact)
             git_commit(path, new_version, noact)
             git_tag(path, new_version, noact)
@@ -192,8 +192,10 @@ def buildtool_cook(final=True, noact=False, skipchecks=False):
             print('%s: == %s' % (path, bv.pkg_version(path)))
 
 
-def should_cook(path, final=True):
-    if not version_is_tagged(path):
+def should_cook(path, final=True, force=False):
+    if force:
+        return True
+    elif not version_is_tagged(path):
         # no tags at all, cook a release
         return True
     elif final and not version_is_final(path):
@@ -212,7 +214,8 @@ def buildtool_dist(versionsfile,
                    buildname=None,
                    final=True,
                    noact=False,
-                   skipchecks=False):
+                   skipchecks=False,
+                   force=False):
     assert versionsfile
     assert distlocation
     if not buildname:
@@ -231,7 +234,7 @@ def buildtool_dist(versionsfile,
         print("\n--- %s ---" % pkg)
         oldversion = vp.get_version(pkg)
         newversion = bv.pkg_version(path)
-        if oldversion == newversion:
+        if oldversion == newversion and not force:
             print("%s: == %s" % (pkg, oldversion))
         else:
             changed.append(pkg)
@@ -239,7 +242,7 @@ def buildtool_dist(versionsfile,
             vp.set_version(pkg, newversion)
             mkrelease(path, distlocation, noact)
 
-    if not changed and tagged_version_is_head(BASEDIR):
+    if not force and not changed and tagged_version_is_head(BASEDIR):
         print("Nothing changed, nothing to release. Aborting.")
         return
 
@@ -318,6 +321,9 @@ def main(defaults={}):
     parser.add_option("-s", "--skip-checks",
                       action="store_true", dest="skipchecks",
                       help="Skip sanity checks.")
+    parser.add_option("-f", "--force",
+                      action="store_true", dest="force",
+                      help="Force release, even of unchanged packages.")
     usage = _usage % dict(script=sys.argv[0])
     parser.set_usage(usage)
     (options, args) = parser.parse_args()
@@ -331,7 +337,10 @@ def main(defaults={}):
         buildtool_status()
 
     elif cmd == 'cook':
-        buildtool_cook(options.final, options.noact, options.skipchecks)
+        buildtool_cook(options.final,
+                       options.noact,
+                       options.skipchecks,
+                       options.force)
 
     elif cmd == 'dist':
         if not options.versionsfile:
@@ -348,7 +357,8 @@ def main(defaults={}):
                        options.buildname,
                        options.final,
                        options.noact,
-                       options.skipchecks)
+                       options.skipchecks,
+                       options.force)
 
     elif cmd == 'git':
         gitargs = args[1:]
@@ -368,22 +378,26 @@ _usage = """
 %(script)s status
     List uncommitted changes in all working trees.
 
-%(script)s [-n] [-c] [-s ] cook
+%(script)s [-n] [-f] [-s] [-c] cook
     Bump version, commit and tag all eggs that have unreleased commits.
 
     [-n]          dry run, no changes
-    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-f]          force a new release, even if no changes
     [-s]          skip sanity check, accept uncommitted changes
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
 
-%(script)s [-n] [-c] [-s] <-v versions> <-d dist> [-b name] dist
+
+%(script)s [-n] [-f] [-s] [-c] <-v versions> <-d dist> [-b name] dist
     Release and upload all changed eggs to distserver (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
     Push all commits and tags in all eggs and the buildout.
 
     [-n]          dry run, no changes
-    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-f]          force a new release, even if no changes
     [-s]          skip sanity check, accept uncommitted changes
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+
     <-v versions> path to buildout versions.txt file
     <-d dist>     pypirc dist location to use for uploading eggs
     [-b name]     build name, defaults to name of buildout directory

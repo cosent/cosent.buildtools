@@ -57,24 +57,27 @@ buildtool
 
 *buildtool cook* prepares your eggs for release::
 
-  buildtool [-n] [-c] [-s] cook
+  buildtool [-n] [-f] [-s] [-c] cook
     Bump version, commit and tag all eggs that have unreleased commits.
 
     [-n]          dry run, no changes
-    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-f]          force a new release, even if no changes
     [-s]          skip sanity check, accept uncommitted changes
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
 
 *buildtool dist* releases all eggs and the buildout itself in one go::
 
-  buildtool [-n] [-c] [-s] <-v versions> <-d dist> [-b name] dist
+  buildtool [-n] [-f] [-s] [-c] <-v versions> <-d dist> [-b name] dist
     Release and upload all changed eggs to distserver (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
     Push all commits and tags in all eggs and the buildout.
 
     [-n]          dry run, no changes
-    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-f]          force a new release, even if no changes
     [-s]          skip sanity check, accept uncommitted changes
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+
     <-v versions> path to buildout versions.txt file
     <-d dist>     pypirc dist location to use for uploading eggs
     [-b name]     name of current buildout, defaults to dirname
