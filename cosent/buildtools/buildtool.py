@@ -175,7 +175,7 @@ def buildtool_status():
         print(git_status(path))
 
 
-def buildtool_cook(final=False, noact=False, force=False):
+def buildtool_cook(final=True, noact=False, force=False):
     if not force and not is_all_clean():
         print("Buildout is not clean, aborting!\n"
               "================================\n")
@@ -192,7 +192,7 @@ def buildtool_cook(final=False, noact=False, force=False):
             print('%s: == %s' % (path, bv.pkg_version(path)))
 
 
-def should_cook(path, final=False):
+def should_cook(path, final=True):
     if not version_is_tagged(path):
         # no tags at all, cook a release
         return True
@@ -300,8 +300,8 @@ def main(defaults={}):
         parser.set_defaults(distlocation=defaults['dist-location'])
     if 'build-name' in defaults:
         parser.set_defaults(buildname=defaults['build-name'])
-    parser.add_option("-f", "--final",
-                      action="store_true", dest="final", default=False,
+    parser.add_option("-c", "--release-candidate",
+                      action="store_true", dest="final", default=True,
                       help="Bump a final version")
     parser.add_option("-n", "--dry-run",
                       action="store_true", dest="noact", default=False,
@@ -368,20 +368,22 @@ _usage = """
 %(script)s status
     List uncommitted changes in all working trees.
 
-%(script)s [-n] [-f] cook
+%(script)s [-n] [-c] [-s ] cook
     Bump version, commit and tag all eggs that have unreleased commits.
 
     [-n]          dry run, no changes
-    [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-s]          skip sanity check, accept uncommitted changes
 
-%(script)s [-n] [-f] <-v versions> <-d dist> [-b name] dist
+%(script)s [-n] [-c] [-s] <-v versions> <-d dist> [-b name] dist
     Release and upload all changed eggs to distserver (via jarn.mkrelease).
     Update and commit buildout versionsfile to reflect the new egg versions.
     Tag the buildout and tag all eggs with the buildout version tag.
     Push all commits and tags in all eggs and the buildout.
 
     [-n]          dry run, no changes
-    [-f]          final version (0.1->0.2), else creates RC (0.1->0.2rc1)
+    [-c]          create RC (0.1->0.2rc1) instead of final version (0.1->0.2)
+    [-s]          skip sanity check, accept uncommitted changes
     <-v versions> path to buildout versions.txt file
     <-d dist>     pypirc dist location to use for uploading eggs
     [-b name]     build name, defaults to name of buildout directory

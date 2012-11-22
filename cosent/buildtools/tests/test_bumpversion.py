@@ -71,7 +71,7 @@ class TestRewriteSetup(unittest.TestCase):
         self.assertEquals(bv.get_version(self.setup_filename), '0.1')
 
     def test_bump_setup_py_rc(self):
-        bv.bump_setup_py(self.setup_filename)
+        bv.bump_setup_py(self.setup_filename, final=False)
         with open(self.setup_filename, 'r') as fh:
             new_setup = fh.read().splitlines()
         diff = []
