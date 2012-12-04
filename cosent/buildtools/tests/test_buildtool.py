@@ -6,13 +6,13 @@ import tempfile
 from cosent.buildtools import buildtool as bt
 from cosent.buildtools import bumpversion as bv
 
-dummypath = "%s/src/dummypackage" % os.getcwd()
+dummypath = "%s/src/cosent.dummypackage" % os.getcwd()
 
 
 class TestGit(unittest.TestCase):
 
     def setUp(self):
-        # reset src/dummypackage
+        # reset src/cosent.dummypackage
         cmd = subprocess.Popen("git reset --hard HEAD",
                                shell=True,
                                cwd=dummypath,
@@ -79,7 +79,7 @@ class TestGit(unittest.TestCase):
 class TestDevelEggs(unittest.TestCase):
 
     def test_devel_eggs(self):
-        pkginfo = {'dummypackage': dummypath}
+        pkginfo = {'cosent.dummypackage': dummypath}
         self.assertEqual(bt.devel_eggs(),
                          pkginfo)
 
