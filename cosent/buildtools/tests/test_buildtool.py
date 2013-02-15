@@ -42,7 +42,8 @@ class TestGit(unittest.TestCase):
         stdout, stderr = cmd.communicate()
 
     def test_git_clean_true(self):
-        self.assertTrue(bt.is_git_clean(dummypath))
+        self.assertTrue(bt.is_git_clean(dummypath),
+                        bt.git_status(dummypath))
 
     def test_git_clean_false(self):
         marker = "%s/REMOVE_THIS_FILE" % dummypath
@@ -51,7 +52,11 @@ class TestGit(unittest.TestCase):
         subprocess.call(["rm", marker])
 
     def test_all_clean_true(self):
-        self.assertTrue(bt.is_all_clean())
+        self.assertTrue(
+            bt.is_all_clean(),
+            "\n%s:\n%s\n\n%s:\n%s" % (
+                dummypath, bt.git_status(dummypath),
+                bt.BASEDIR, bt.git_status(bt.BASEDIR)))
 
     def test_all_clean_false(self):
         marker = "%s/REMOVE_THIS_FILE" % dummypath
