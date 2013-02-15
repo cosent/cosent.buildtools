@@ -13,4 +13,5 @@ include/
 lib/
 lib64
 parts/
+local/
 bootstrap.py
