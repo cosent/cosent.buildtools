@@ -24,16 +24,21 @@ class VersionParser(object):
         assert self.versions.has_section("versions")
 
     def get_version(self, pkg):
+        pkg = self.escape(pkg)
         if self.versions.has_option("versions", pkg):
             return self.versions.get("versions", pkg)
         return None
 
     def set_version(self, pkg, version):
+        pkg = self.escape(pkg)
         self.versions.set("versions", pkg, version)
 
     def write(self):
         with open(self.versionsfile, 'w') as fh:
             self.versions.write(fh)
+
+    def escape(self, pkg):
+        return pkg.replace("_", "-")
 
 
 def git_status(path):

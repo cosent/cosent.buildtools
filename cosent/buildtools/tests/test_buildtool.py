@@ -122,6 +122,17 @@ class TestVersionParser(unittest.TestCase):
         vp.set_version('boo.baz', '1.1')
         self.assertEquals(vp.get_version('boo.baz'), '1.1')
 
+    def test_get_underscored(self):
+        vp = bt.VersionParser(self._versions)
+        self.assertEquals(vp.get_version('silly_me.pkg'), '2.1')
+        self.assertEquals(vp.get_version('silly-me.pkg'), '2.1')
+
+    def test_set_update_underscored(self):
+        vp = bt.VersionParser(self._versions)
+        vp.set_version('silly_me.pkg', '2.2')
+        self.assertEquals(vp.get_version('silly_me.pkg'), '2.2')
+        self.assertEquals(vp.get_version('silly-me.pkg'), '2.2')
+
     def test_write(self):
         vp = bt.VersionParser(self._versions)
         vp.set_version('foo.bar', '0.2rc4')
@@ -133,9 +144,11 @@ class TestVersionParser(unittest.TestCase):
 dummy_versions = """[versions]
 foo.bar = 0.2rc3
 Products.baz = 0.3.rc5
+silly-me.pkg = 2.1
 """
 
 new_versions = """[versions]
 foo.bar = 0.2rc4
 Products.baz = 0.3.rc5
+silly-me.pkg = 2.1
 """
