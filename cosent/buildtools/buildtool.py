@@ -247,6 +247,10 @@ def buildtool_dist(versionsfile,
             vp.set_version(pkg, newversion)
             mkrelease(path, distlocation, noact)
 
+    # force rc->final release even if *nothing* changed
+    if final and not version_is_final(BASEDIR):
+        changed.append(buildname)
+
     if not force and not changed and tagged_version_is_head(BASEDIR):
         print("Nothing changed, nothing to release. Aborting.")
         return
