@@ -46,6 +46,26 @@ class TestBumpVersion(unittest.TestCase):
         self.assertEquals(bv.bump_rc('3.4.rc5.7'), '3.4.rc6')
         self.assertEquals(bv.bump_final('3.4.rc5.7'), '3.4')
 
+    def test_combined_dev(self):
+        version = '1.1a2.dev0-cultact.1.0.dev'
+        rc1 = '1.1a2.dev0-cultact.1.0.rc1'
+        rc2 = '1.1a2.dev0-cultact.1.0.rc2'
+        final = '1.1a2.dev0-cultact.1.0'
+        self.assertEquals(bv.bump_rc(version), rc1)
+        self.assertEquals(bv.bump_final(version), final)
+        self.assertEquals(bv.bump_rc(rc1), rc2)
+        self.assertEquals(bv.bump_final(rc1), final)
+
+    def test_combined_rc(self):
+        version = '1.1a2.rc2-cultact.1.0.devo'
+        rc1 = '1.1a2.rc2-cultact.1.0.rc1'
+        rc2 = '1.1a2.rc2-cultact.1.0.rc2'
+        final = '1.1a2.dev0-cultact.1.0'
+        self.assertEquals(bv.bump_rc(version), rc1)
+        self.assertEquals(bv.bump_final(version), final)
+        self.assertEquals(bv.bump_rc(rc1), rc2)
+        self.assertEquals(bv.bump_final(rc1), final)
+
 
 class TestRewriteSetup(unittest.TestCase):
 
