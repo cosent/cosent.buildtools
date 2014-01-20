@@ -7,6 +7,26 @@ from cosent.buildtools import bumpversion as bv
 
 class TestBumpVersion(unittest.TestCase):
 
+    def test_splitversion_prefix(self):
+        self.assertEquals(bv.splitversion('1.2-cosent-2.8'),
+                          ('1.2-cosent', '2.8', '2.8', '', ''))
+
+    def test_splitversion_final(self):
+        self.assertEquals(bv.splitversion('2.8'),
+                          ('', '2.8', '2.8', '', ''))
+
+    def test_splitversion_dev(self):
+        self.assertEquals(bv.splitversion('2.8dev'),
+                          ('', '2.8dev', '2.8', '', ''))
+        self.assertEquals(bv.splitversion('2.8dev2'),
+                          ('', '2.8dev2', '2.8', '', '2'))
+
+    def test_splitversion_rc(self):
+        self.assertEquals(bv.splitversion('2.8rc'),
+                          ('', '2.8rc', '2.8', '', ''))
+        self.assertEquals(bv.splitversion('2.8rc1'),
+                          ('', '2.8rc1', '2.8', '1', ''))
+
     def test_dev2rc(self):
         self.assertEquals(bv.bump_rc('2.8dev'), '2.8rc1')
         self.assertEquals(bv.bump_rc('2.8dev1'), '2.8rc1')
@@ -60,7 +80,7 @@ class TestBumpVersion(unittest.TestCase):
         version = '1.1a2.rc2-cultact.1.0.devo'
         rc1 = '1.1a2.rc2-cultact.1.0.rc1'
         rc2 = '1.1a2.rc2-cultact.1.0.rc2'
-        final = '1.1a2.dev0-cultact.1.0'
+        final = '1.1a2.rc2-cultact.1.0'
         self.assertEquals(bv.bump_rc(version), rc1)
         self.assertEquals(bv.bump_final(version), final)
         self.assertEquals(bv.bump_rc(rc1), rc2)

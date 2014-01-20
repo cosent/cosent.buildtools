@@ -3,31 +3,53 @@ import sys
 
 
 def bump_rc(version):
-    if 'dev' in version:
-        final, dev = version.split('dev')
-        return "%src1" % final
-    elif 'rc' in version:
-        final, rc = version.split('rc')
+    (prefix, base, final, rc, dev) = splitversion(version)
+    if 'dev' in base:
+        v = "%src1" % final
+        return restoreprefix(prefix, v)
+    elif 'rc' in base:
         if rc == '':
             rc = 0
         elif '.' in rc:
             rc = rc.split('.')[0]
-        return "%src%s" % (final, int(rc) + 1)
+        v = "%src%s" % (final, int(rc) + 1)
+        return restoreprefix(prefix, v)
     else:
         return bump_final(version) + 'rc1'
 
 
 def bump_final(version):
-    if 'dev' in version:
-        final, dev = version.split('dev')
-        return final.strip('.')
-    elif 'rc' in version:
-        final, rc = version.split('rc')
-        return final.strip('.')
+    (prefix, base, final, rc, dev) = splitversion(version)
+    if 'rc' in base or 'dev' in base:
+        v = final.strip('.')
+        return restoreprefix(prefix, v)
     else:
         parts = version.split('.')
         parts[-1] = str(int(parts[-1]) + 1)
         return '.'.join(parts).strip('.')
+
+
+def splitversion(version):
+    prefix = ''
+    base = version
+    final = ''
+    rc = ''
+    dev = ''
+    if '-' in version:
+        parts = version.split('-')
+        prefix = '-'.join(parts[:-1])
+        base = parts[-1]
+    if 'dev' in base:
+        final, dev = base.split('dev')
+    elif 'rc' in base:
+        final, rc = base.split('rc')
+    else:
+        final = base
+    return (prefix, base, final, rc, dev)
+
+
+def restoreprefix(prefix, base):
+    return '-'.join([prefix, base]).strip('-')
 
 
 def get_version(path, append_setup_py=False):
