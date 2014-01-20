@@ -314,7 +314,7 @@ def main(defaults={}):
         parser.set_defaults(buildname=defaults['build-name'])
     parser.add_option("-c", "--release-candidate",
                       action="store_false", dest="final", default=True,
-                      help="Bump a final version")
+                      help="Do not bump a final version, bump a RC instead.")
     parser.add_option("-n", "--dry-run",
                       action="store_true", dest="noact", default=False,
                       help="Dry run. Don't change anything.")
