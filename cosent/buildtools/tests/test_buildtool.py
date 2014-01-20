@@ -146,13 +146,21 @@ class TestVersionParser(unittest.TestCase):
             versions = fh.read()
         self.assertEqual(versions.strip(), new_versions.strip())
 
-dummy_versions = """[versions]
+dummy_versions = """
+[buildout]
+eggs += foo.bar
+
+[versions]
 foo.bar = 0.2rc3
 Products.baz = 0.3.rc5
 silly-me.pkg = 2.1
 """
 
-new_versions = """[versions]
+new_versions = """
+[buildout]
+eggs += foo.bar
+
+[versions]
 foo.bar = 0.2rc4
 Products.baz = 0.3.rc5
 silly-me.pkg = 2.1

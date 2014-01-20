@@ -36,6 +36,11 @@ class VersionParser(object):
     def write(self):
         with open(self.versionsfile, 'w') as fh:
             self.versions.write(fh)
+        # argh! python2 configparser inserts spaces
+        with open(self.versionsfile, 'r') as fh:
+            versions = fh.read()
+        with open(self.versionsfile, 'w') as fh:
+            fh.write(versions.replace('+ =', '+='))
 
     def escape(self, pkg):
         return pkg.replace("_", "-")
