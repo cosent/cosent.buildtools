@@ -7,7 +7,7 @@ test:
 	@bin/test --with-coverage --cover-package=cosent.buildtools --cover-erase
 
 bin/buildout: bin/python2.7
-	@wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
+	@wget http://downloads.buildout.org/1/bootstrap.py
 	@bin/python2.7 bootstrap.py
 	@rm bootstrap.*
 
@@ -15,8 +15,8 @@ bin/python2.7:
 	@virtualenv --clear -p python2.7 --distribute .
 
 travis:
-	wget http://svn.zope.org/repos/main/zc.buildout/trunk/bootstrap/bootstrap.py
-	python bootstrap.py -v 1.4.3
+	wget http://downloads.buildout.org/1/bootstrap.py
+	python bootstrap.py
 	rm bootstrap.*
 	bin/buildout
 
